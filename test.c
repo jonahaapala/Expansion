@@ -8,9 +8,10 @@ int main() {
     Vector *Avec = newVec(O, A);
     Vector *Bvec = newVec(O, B);
     Vector *V = newVec(A, B);
-    Point **points = malloc(3 * sizeof(Point *));
-    points[0] = A;  points[1] = B;  points[2] = O;
-    Polygon *P = newPoly(3, points);
+//    Point **points = malloc(3 * sizeof(Point *));
+//    points[0] = A;  points[1] = B;  points[2] = O;
+//    Polygon *P = newPoly(3, points);
+    Polygon *P = newPoly(3, A, B, O);
 
     Point *C = sum(A, B); Point *D = diff(A, B);
     double E = dot(Avec, Bvec);
@@ -23,6 +24,6 @@ int main() {
     //freePt(O);
     freeVec(V); freeVec(Avec); freeVec(Bvec);
     freePoly(P);
-    free(points);
+//    free(points);
     return 0;
 }
