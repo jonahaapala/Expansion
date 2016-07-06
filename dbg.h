@@ -1,3 +1,6 @@
+/*
+   Taken from "Learn C the Hard Way" by Zed Shaw
+   */
 #ifndef __dbg_h__
 #define __dbg_h__
 
