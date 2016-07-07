@@ -12,7 +12,7 @@ typedef struct Vector {
 } Vector;
 
 Vector *newVec(Point *A, Point *B) {
-    Point *P = diff(B, A);
+    Point *P = diffPt(B, A);
     Vector *V = malloc(sizeof(Vector));
     V->p = P;   V->theta = atan2(P->y, P->x);   V->mag = dist(A,B);
     return V;

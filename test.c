@@ -8,22 +8,21 @@ int main() {
     Vector *Avec = newVec(O, A);
     Vector *Bvec = newVec(O, B);
     Vector *V = newVec(A, B);
-//    Point **points = malloc(3 * sizeof(Point *));
-//    points[0] = A;  points[1] = B;  points[2] = O;
-//    Polygon *P = newPoly(3, points);
-    Polygon *P = newPoly(3, A, B, O);
+    Polygon *P1 = newPoly(3, newPt(1,1), newPt(2,1), newPt(0,1));
+    Polygon *P = newPoly(3);
+    addPt(P, A, 0);
+    addPt(P, B, 1);
+    addPt(P, O, 2);
 
-    Point *C = sum(A, B); Point *D = diff(A, B);
+    Point *C = sumPt(A, B); Point *D = diffPt(A, B);
     double E = dot(Avec, Bvec);
     printPt(A); printPt(B); printPt(C); printPt(D);
     printf("A dot B = %f\n", E);
     printVec(V);
+    printPoly(P1);
     printPoly(P);
-    //freePt(A); freePt(B); 
     freePt(C); freePt(D);
-    //freePt(O);
     freeVec(V); freeVec(Avec); freeVec(Bvec);
-    freePoly(P);
-//    free(points);
+    freePoly(P1);   freePoly(P);
     return 0;
 }

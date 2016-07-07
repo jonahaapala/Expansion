@@ -20,12 +20,18 @@ void freePt(Point *A) {
     free(A);
 }
 
-Point *sum(Point *A, Point *B) {
+Point *sumPt(Point *A, Point *B) {
     return newPt(A->x + B->x, A->y + B->y);
 }
 
-Point *diff(Point *A, Point *B) {
+Point *diffPt(Point *A, Point *B) {
     return newPt(A->x - B->x, A->y - B->y);
+}
+
+Point *scalePt(Point *A, double factor) {
+    A->x = A->x * factor;
+    A->y = A->y * factor;
+    return A;
 }
 
 double dist(Point *A, Point *B) {
@@ -35,5 +41,5 @@ double dist(Point *A, Point *B) {
 void printPt(Point *A) {
     printf("(%f,%f)\n", A->x, A->y);
 }
- 
+
 #endif

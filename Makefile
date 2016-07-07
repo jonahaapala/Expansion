@@ -6,7 +6,7 @@ OBJECTS = $(patsubst %.c,%,$(SOURCES))
 
 all: $(OBJECTS)
 
-test: point.h vector.h
+test: point.h vector.h polygon.h
 
 .PHONY:
 clean:
