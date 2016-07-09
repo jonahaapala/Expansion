@@ -1,4 +1,4 @@
-CFLAGS = -g -O2 -Wall -Wextra -Isrc/headers -rdynamic $(OPTFLAGS)
+CFLAGS = -g -O2 -Wall -Wextra -Iheaders -rdynamic $(OPTFLAGS)
 LDLIBS = -lm
 
 SOURCES = $(wildcard src/*.c)
