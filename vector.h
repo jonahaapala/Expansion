@@ -27,6 +27,10 @@ double dot(Vector *A, Vector *B) {
     return (A->p->x * B->p->x) + (A->p->y * B->p->y);
 }
 
+double crossMag(Vector *A, Vector *B) {
+    return (A->p->x * B->p->y) - (A->p->y * B->p->x); // 2-D vectors only
+}
+
 void printVec(Vector *V) {
     printPt(V->p);
     printf("%f rad\t%f deg\n%f units\n", V->theta, V->theta * 180/PI, V->mag);
