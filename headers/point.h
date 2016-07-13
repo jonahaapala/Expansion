@@ -17,6 +17,14 @@ Point *newPt(double x, double y) {
 }
 
 void freePt(Point *A) {
+    if(A) free(A);
+}
+
+void freePts(Point **A, int num) {
+    if(!A) return;
+    while(num-- > 0) {
+        freePt(A[num]);
+    }
     free(A);
 }
 

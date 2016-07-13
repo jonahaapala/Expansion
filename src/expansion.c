@@ -1,10 +1,8 @@
-/****************************************
-  SEE dAngle
-****************************************/
 #include <stdio.h>
 #include <stdbool.h>
 #include "polygon.h"
 #include "vector.h"
+#include "parse.h"
 
 static Polygon *expand(Polygon *poly, bool directIsOut, double len);
 static Point *move(Polygon *poly, int pos, bool directIsOut, double len);
@@ -14,29 +12,48 @@ static bool isInternalPt(Polygon *poly, Point *test);
 static int mod(int a, int b);
 
 int main(int argc, char *argv[]) {
-    Polygon *poly = newPoly(4, newPt(0,0), newPt(0,1), newPt(1, 1), newPt(1,0));
-    check(poly != NULL, "newPoly failed");
-    Polygon *border = expand(poly, true, 1);
+    bool directIsOut; double width; int chkpt = 0;
+    int valid = validArgs(--argc, ++argv, &width, &directIsOut);
+    if(!valid) goto error;
+
+    Point **points = NULL;
+    Polygon *poly = newPoly(argc-2);
+    check(poly, "newPoly failed.");
+    points = parseArgs(argc-2, argv+2);
+    check(points != NULL, "parseArgs failed.");
+    check(fillPoly(poly, points), "fillPoly failed.");
+    free(points);
+
+    chkpt = 1;
+    Polygon *border = expand(poly, directIsOut, width);
+    check(border != NULL, "expand failed.");
 
     printPoly(poly);
+    freePoly(poly);
     printPoly(border);
     freePoly(border);
-    freePoly(poly);
     return 0;
 error:
+    if(valid) {
+        freePoly(poly);
+        free(points);
+    }
+    if(chkpt) freePoly(border);
+    else printf("USAGE: %s\n", USAGE);
     return 1;
 }
 
 static Polygon *expand(Polygon *poly, bool directIsOut, double len) {
-    check(poly != NULL, "Null pointer");
+    check(poly != NULL, "Null pointer.");
 
     int size = poly->num;
     Polygon *border = newPoly(size);
+    check(border, "newPoly failed.");
 
     while(size-- > 0) {
         Point *new = move(poly, size, directIsOut, len);
-        if(!addPt(border, new, size)) {
-            log_err("addPt failed");
+        if(!pushPt(border, new, size)) {
+            log_err("pushPt failed.");
         }
     }
 

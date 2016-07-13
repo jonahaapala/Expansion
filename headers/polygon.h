@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdarg.h>
 #include "point.h"
 #include "dbg.h"
 
@@ -8,45 +7,51 @@ typedef struct Polygon {
     int num;
 } Polygon;
 
-Polygon *newPoly(int n, ...) {
+Polygon *newPoly(int n) {
     Polygon *poly = malloc(sizeof(Polygon));
-    check_mem(poly);
+    check(poly != NULL, "Out of Memory.");
     poly->points = malloc(n * sizeof(Point *));
-    check_mem(poly->points);
+    check(poly->points != NULL, "Out of Memory.");
     poly->num = n;
-    check(n > 2, "Invalid number of arguments");
-
-    va_list ap;
-    va_start(ap, n);
-    int i = -1;
-    while(++i < n) {
-        poly->points[i] = va_arg(ap, Point *);
-    }
+    check(n > 2, "Invalid number of arguments.");
 
     return poly;
 error:
-    if(poly) free(poly);
+    if(poly) {
+        if(poly->points) free(poly->points);
+        free(poly);
+    }
     return NULL;
 }
 
 void freePoly(Polygon *poly) {
-    check(poly != NULL && poly->points != NULL, "Null pointer");
+    check(poly != NULL && poly->points != NULL, "Null pointer.");
     int n = poly->num;
-    while(n-- > 0) {
-        freePt(poly->points[n]);
-    }
-    free(poly->points);
+    freePts(poly->points, n);
     free(poly);
+    return;
 error:
+    if(poly) free(poly);
     return;
 }
 
-int addPt(Polygon *poly, Point *pt, int n) {
-    check(-1 < n && n < poly->num, "Out of bounds");
-    check(poly != NULL && pt != NULL, "Null pointer");
+int pushPt(Polygon *poly, Point *pt, int n) {
+    check(-1 < n && n < poly->num, "Out of bounds.");
+    check(poly != NULL && pt != NULL, "Null pointer.");
 
     poly->points[n] = pt;
+    return 1;
+error:
+    return 0;
+}
 
+int fillPoly(Polygon *poly, Point **pts) {
+    check(poly != NULL && pts != NULL, "Null pointer.");
+    int size = poly->num;
+    while(size--) {
+        Point *pt = pts[size]; // potential OOB error
+        check(pushPt(poly, pt, size), "pushPt failed.");
+    }
     return 1;
 error:
     return 0;
